@@ -1,0 +1,10 @@
+{
+  "name": "SHARK7 AUTOPOST",
+  "short_name": "SHARK7",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#090909",
+  "theme_color": "#090909",
+  "description": "Painel inicial de preparação de Reels para FTV SHARK7",
+  "icons": []
+}

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="SHARK7 AUTOPOST — painel de preparação de Reels para FTV SHARK7.">
+<link rel="manifest" href="manifest.json">
+<title>SHARK7 AUTOPOST</title>
+<style>
+:root{--bg:#090909;--panel:#151515;--yellow:#ffd21a;--muted:#aaa;--line:#303030}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#202020 0,#090909 45%);color:#f7f7f7;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.wrap{max-width:760px;margin:auto;padding:22px 16px 40px}.brand{display:flex;align-items:center;gap:12px;margin:6px 0 24px}.logo{width:54px;height:54px;border-radius:16px;background:var(--yellow);color:#090909;display:grid;place-items:center;font-size:27px;font-weight:1000}.brand h1{font-size:22px;margin:0;letter-spacing:.5px}.brand p{margin:3px 0 0;color:var(--muted);font-size:12px;letter-spacing:2px}
+.badge{display:inline-block;border:1px solid #66540b;color:var(--yellow);padding:6px 10px;border-radius:99px;font-size:11px;font-weight:800;letter-spacing:1px}
+h2{font-size:25px;line-height:1.15;margin:13px 0 8px}.intro{color:#bbb;line-height:1.5;margin:0 0 22px}.card{background:rgba(21,21,21,.95);border:1px solid var(--line);border-radius:18px;padding:17px;margin:14px 0;box-shadow:0 10px 28px #0005}.card h3{margin:0 0 14px;font-size:16px}.field{display:block;margin:12px 0}.field span{display:block;font-size:12px;color:#c9c9c9;margin-bottom:7px}.field input,.field select,.field textarea{width:100%;border:1px solid #3a3a3a;border-radius:12px;background:#0b0b0b;color:white;padding:12px;font:inherit}.field textarea{min-height:80px;resize:vertical}.field input[type=file]{font-size:12px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{width:100%;border:0;border-radius:12px;padding:14px 16px;font-weight:900;font-size:14px;background:var(--yellow);color:#101010;cursor:pointer}.btn.secondary{background:#252525;color:#fff;border:1px solid #444;margin-top:9px}.hint{font-size:12px;line-height:1.5;color:#999}.preview{width:100%;max-height:340px;object-fit:contain;background:#050505;border-radius:12px;margin-top:10px;display:none}.output{white-space:pre-wrap;line-height:1.55;font-size:14px;color:#f4f4f4;background:#0a0a0a;padding:14px;border:1px solid #333;border-radius:12px;min-height:90px}.footer{text-align:center;color:#777;font-size:11px;padding:20px 8px}.status{font-size:12px;color:var(--yellow);margin-top:8px;min-height:18px}
+@media(max-width:480px){.row{grid-template-columns:1fr}.wrap{padding:18px 13px 30px}.brand h1{font-size:19px}h2{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand">
+    <div class="logo">♟</div>
+    <div><h1>FTV SHARK7</h1><p>AUTOPOST • CENTRAL DE REELS</p></div>
+  </header>
+  <span class="badge">PAINEL INICIAL</span>
+  <h2>Seu próximo Reel começa aqui.</h2>
+  <p class="intro">Prepare ideias, legendas e hashtags para os vídeos de futevôlei. Esta versão é uma interface inicial: ainda não conecta à IA nem publica no Instagram.</p>
+
+  <section class="card">
+    <h3>01 / Seu vídeo</h3>
+    <label class="field"><span>Escolha um vídeo do iPhone</span><input id="video" type="file" accept="video/*"></label>
+    <video id="preview" class="preview" controls playsinline></video>
+    <p class="hint">O vídeo fica apenas nesta página durante a visualização. Ele não é enviado para um servidor nesta versão.</p>
+  </section>
+
+  <section class="card">
+    <h3>02 / Detalhes do Reel</h3>
+    <div class="row">
+      <label class="field"><span>Tipo de lance</span><select id="kind"><option value="melhor lance">Melhor lance</option><option value="bicicleta">Bicicleta</option><option value="defesa">Defesa incrível</option><option value="disputa">Disputa na rede</option><option value="engraçado">Momento engraçado</option><option value="treino">Treino</option><option value="compilado">Compilado de jogadas</option></select></label>
+      <label class="field"><span>Estilo da legenda</span><select id="style"><option value="energético">Energético</option><option value="provocador">Provocador</option><option value="profissional">Profissional</option><option value="engraçado">Engraçado</option></select></label>
+    </div>
+    <label class="field"><span>Contexto opcional</span><textarea id="context" placeholder="Ex.: final do torneio, ponto decisivo, treino com a galera..."></textarea></label>
+    <button class="btn" id="generate">GERAR RASCUNHO DE LEGENDA</button>
+    <div id="status" class="status" role="status"></div>
+  </section>
+
+  <section class="card">
+    <h3>03 / Legenda e hashtags</h3>
+    <div id="output" class="output">Sua legenda aparecerá aqui.</div>
+    <button class="btn secondary" id="copy">COPIAR LEGENDA</button>
+  </section>
+
+  <section class="card">
+    <h3>04 / Planejamento</h3>
+    <label class="field"><span>Data e horário desejados</span><input id="schedule" type="datetime-local"></label>
+    <button class="btn secondary" id="save">GUARDAR PLANO NESTE APARELHO</button>
+    <p class="hint">Por enquanto, isto guarda um planejamento local no navegador. Não agenda nem publica no Instagram.</p>
+    <div id="plans" class="output">Nenhum plano salvo nesta sessão.</div>
+  </section>
+
+  <section class="card">
+    <h3>Próxima etapa</h3>
+    <p class="hint">Para ativar análise por IA, armazenamento seguro e publicação automática, será necessário adicionar um backend e configurar a API oficial da Meta. Nunca coloque senhas ou tokens secretos neste arquivo público.</p>
+  </section>
+  <div class="footer">SHARK7 AUTOPOST • FTV SHARK7 • versão inicial</div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let videoURL=null, plans=[];
+$('video').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(!f)return;if(videoURL)URL.revokeObjectURL(videoURL);videoURL=URL.createObjectURL(f);$('preview').src=videoURL;$('preview').style.display='block';$('status').textContent='Vídeo carregado para pré-visualização.'});
+$('generate').addEventListener('click',()=>{
+ const k=$('kind').value,s=$('style').value,c=$('context').value.trim();
+ const openings={
+ 'energético':[`É pressão, técnica e coração! 🔥`,`O futevôlei entrega mais um espetáculo! 🦈`,`Quem piscou, perdeu! ⚡`],
+ 'provocador':[`Pode chamar de sorte… a gente chama de treino. 😏`,`A rede separa, mas o talento aparece. 🦈`,`E aí, defenderia essa? 👀`],
+ 'profissional':[`Mais um lance que mostra a intensidade do futevôlei.`,`Leitura de jogo, técnica e muita dedicação.`,`O resultado de treino e parceria dentro de quadra.`],
+ 'engraçado':[`Era só mais um ponto tranquilo… só que não 😂`,`Alguém avisa que a bola não tinha acabado! 😂`,`O importante é manter a resenha em dia. 😅`]
+ };
+ const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+ const extra=c?`\n\n${c}`:'';
+ const tags='#FTVSHARK7 #Futevolei #Futevôlei #FutevoleiBrasil #BeachSports #ReelsBrasil';
+ $('output').textContent=`${pick(openings[s])}\n\n${k.charAt(0).toUpperCase()+k.slice(1)} na areia, com energia do começo ao fim! 🏐🦈${extra}\n\n${tags}`;
+ $('status').textContent='Rascunho criado com modelos locais; ainda não é uma análise por IA.';
+});
+$('copy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('output').textContent);$('status').textContent='Legenda copiada!'}catch(e){$('status').textContent='Selecione e copie o texto manualmente.'}});
+$('save').addEventListener('click',()=>{const date=$('schedule').value;if(!date){$('plans').textContent='Escolha uma data e horário antes de guardar.';return;}plans.push({date,caption:$('output').textContent});$('plans').textContent=plans.map((p,i)=>`${i+1}. ${new Date(p.date).toLocaleString('pt-BR')}\n${p.caption}`).join('\n\n──────────\n\n');$('status').textContent='Plano guardado nesta sessão do navegador.'});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
